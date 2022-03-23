@@ -2,36 +2,22 @@
 #include <ros.h>
 #include <std_msgs/Float32.h>
 
-ros::NodeHandle  nh;
-ros::Subscriber<std_msgs::Float32> subMan("5678/mannequinAngle", &man_angle_move);
 
 float man_angle = 0.000;
 
 float gear_ratio = 5.000; 
 
 float motor_step_time = 4.000;
-  
+
 Stepper myStepper(200, 4, 5, 6, 7);
-void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(9600);
-  nh.initNode();
-  nh.subscribe(subMan);
-  "float My_angle = M_PI/25";
-  
-  "man_angle_move(My_angle)";
-  
-}
 
-void loop() {
-  "ros get angle callback";
+ros::NodeHandle  nh;
 
-}
 //void man_angle_move(float angle){
-void man_angle_move(std_msgs::Float32& msg){
+void man_angle_move(const std_msgs::Float32& msg){
     
     
-    float angle = msg.data
+    float angle = msg.data;
 
     int arrival_time = 100 ;
     "1/frequency at which signal is published in ms";
@@ -84,4 +70,24 @@ void man_angle_move(std_msgs::Float32& msg){
 
           return;
     }
+}
+
+ros::Subscriber<std_msgs::Float32> subMan("5678/mannequinAngle", &man_angle_move);
+
+  
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  nh.initNode();
+  nh.subscribe(subMan);
+  "float My_angle = M_PI/25";
+  
+  "man_angle_move(My_angle)";
+  
+}
+
+void loop() {
+   nh.spinOnce();
+
 }
