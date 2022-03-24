@@ -19,7 +19,7 @@ void man_angle_move(const std_msgs::Float32& msg){
     
     float angle = msg.data;
 
-    int arrival_time = 100 ;
+    int arrival_time = 95 ;
     "1/frequency at which signal is published in ms";
 
     float angle_diff = angle - man_angle;
@@ -38,6 +38,10 @@ void man_angle_move(const std_msgs::Float32& msg){
     float wait_time = fract_time - motor_step_time;
     Serial.print(" wait_ time (ms) ");
     Serial.print(wait_time);
+    if (wait_time < 0){
+        wait_time = 0;
+        Serial.print("no time");
+    }
 
     if (diff_steps > 0){
           for (int i = 0; i < diff_steps; i++){
@@ -61,15 +65,8 @@ void man_angle_move(const std_msgs::Float32& msg){
           }
     }
 
-    if (diff_steps_count == 0){
-          Serial.print( " here ");
-          man_angle = angle;
-
-          return;
-    } else{
-
-          return;
-    }
+    return;
+    
 }
 
 ros::Subscriber<std_msgs::Float32> subMan("5678/mannequinAngle", &man_angle_move);
